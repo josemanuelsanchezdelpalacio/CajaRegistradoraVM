@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.dam2jms.cajaregistradoravm.R
 import com.dam2jms.cajaregistradoravm.data.billetesMonedas
+import com.dam2jms.cajaregistradoravm.data.listaCambios
 import com.dam2jms.cajaregistradoravm.states.UiState
 import com.dam2jms.cajaregistradoravm.viewmodels.ViewModelCambios
 
@@ -112,7 +113,7 @@ fun cambiosScreenContent(modifier: Modifier, mvvm: ViewModelCambios, state: UiSt
         ) {
             billetesMonedas.forEach { billete ->
                 //llamo a la lista de los cambios e inicializo cada numero a 0
-                Text(text = "${state.listaCambios[billete] ?: 0}")
+                Text(text = "${listaCambios[billete] ?: 0}")
             }
         }
 
