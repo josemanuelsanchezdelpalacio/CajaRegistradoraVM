@@ -38,6 +38,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.dam2jms.cajaregistradoravm.R
+import com.dam2jms.cajaregistradoravm.data.billetesMonedas
 import com.dam2jms.cajaregistradoravm.states.UiState
 import com.dam2jms.cajaregistradoravm.viewmodels.ViewModelCambios
 
@@ -51,7 +52,7 @@ fun cambiosScreenState(navController: NavController, mvvm: ViewModelCambios) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text(text = "CAMBIOS DINERO" )},
+                title = { Text(text = "CAMBIOS DINERO") },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     titleContentColor = MaterialTheme.colorScheme.primary
@@ -71,7 +72,6 @@ fun cambiosScreenState(navController: NavController, mvvm: ViewModelCambios) {
 @Composable
 fun cambiosScreenContent(modifier: Modifier, mvvm: ViewModelCambios, state: UiState) {
 
-    var mostrarAlertDialog by rememberSaveable { mutableStateOf(false) }
     val context = LocalContext.current
 
     Column(
@@ -83,11 +83,11 @@ fun cambiosScreenContent(modifier: Modifier, mvvm: ViewModelCambios, state: UiSt
     ) {
         Spacer(modifier = Modifier.height(50.dp))
 
+        //muestro las imagenes de los billetes y monedas
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            // Modifico el tamaño de las imágenes
             listOf(
                 R.drawable.billete_cien,
                 R.drawable.billete_cincuenta,
@@ -96,28 +96,31 @@ fun cambiosScreenContent(modifier: Modifier, mvvm: ViewModelCambios, state: UiSt
                 R.drawable.billete_cinco,
                 R.drawable.moneda_dos,
                 R.drawable.moneda_uno
-            ).forEach { imageResource ->
+            ).forEach { imagenes ->
                 Image(
-                    painter = painterResource(id = imageResource),
-                    contentDescription = null,
+                    painter = painterResource(id = imagenes),
+                    contentDescription = "imagen billete",
                     modifier = Modifier.size(50.dp)
                 )
             }
         }
 
+        //actualizo los cambios de cada billete y monedas
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            // Aseguro que las claves existan en el mapa antes de acceder
-            listOf(100, 50, 20, 10, 5, 2, 1).forEach { billete ->
+            billetesMonedas.forEach { billete ->
+                //llamo a la lista de los cambios e inicializo cada numero a 0
                 Text(text = "${state.listaCambios[billete] ?: 0}")
             }
         }
 
         OutlinedTextField(
             value = state.importe.toString(),
-            onValueChange = { mvvm.onChange(if (it.isEmpty()) 0.0 else it.toDouble(), state.pago) },
+            onValueChange = {
+                mvvm.onChange(if (it.isEmpty()) 0.0 else it.toDouble(), state.pago)
+            },
             label = { Text(text = "Importe") },
             modifier = Modifier
                 .padding(8.dp)
@@ -133,7 +136,8 @@ fun cambiosScreenContent(modifier: Modifier, mvvm: ViewModelCambios, state: UiSt
                 .padding(8.dp)
                 .align(Alignment.CenterHorizontally)
         )
-        
+
+
         Button(
             onClick = {
                 //llamo al metodo del viewmodel con la logica
@@ -142,7 +146,7 @@ fun cambiosScreenContent(modifier: Modifier, mvvm: ViewModelCambios, state: UiSt
                 .fillMaxWidth()
                 .padding(8.dp)
         ) {
-            Text(text = "DESGLOSAR")
+            Text(text = "CAMBIOS")
         }
     }
 }

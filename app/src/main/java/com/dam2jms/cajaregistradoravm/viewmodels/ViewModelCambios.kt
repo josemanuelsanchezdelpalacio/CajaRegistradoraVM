@@ -8,6 +8,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import com.dam2jms.cajaregistradoravm.R
+import com.dam2jms.cajaregistradoravm.data.billetesMonedas
+import com.dam2jms.cajaregistradoravm.data.listaCambios
 
 class ViewModelCambios : ViewModel() {
 
@@ -21,9 +23,6 @@ class ViewModelCambios : ViewModel() {
     }
 
     fun cambios(context: Context) {
-        val billetesMonedas = listOf(100, 50, 20, 10, 5, 2, 1)
-        val listaCambios = mutableMapOf<Int, Int>()
-
         var cambio = _uiState.value.pago - _uiState.value.importe
 
         for (billete in billetesMonedas) {
@@ -34,14 +33,8 @@ class ViewModelCambios : ViewModel() {
             }
         }
 
-        _uiState.value.resultado = buildString {
-            for ((billete, cantidad) in listaCambios) {
-                append("$cantidad de $billete\n")
-            }
-        }
-
         _uiState.update { currentState ->
-            currentState.copy(resultado = _uiState.value.resultado)
+            currentState.copy(listaCambios = listaCambios)
         }
     }
 }
