@@ -118,9 +118,7 @@ fun cambiosScreenContent(modifier: Modifier, mvvm: ViewModelCambios, state: UiSt
 
         OutlinedTextField(
             value = state.importe.toString(),
-            onValueChange = {
-                mvvm.onChange(if (it.isEmpty()) 0.0 else it.toDouble(), state.pago)
-            },
+            onValueChange = { mvvm.onChange(if (it.isEmpty()) 0.0 else it.toDouble(), state.pago) },
             label = { Text(text = "Importe") },
             modifier = Modifier
                 .padding(8.dp)
